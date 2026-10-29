@@ -1,0 +1,23 @@
+1. Quantas avaliações foram classificadas como positivas pela métrica de Jaccard?
+Resposta: 29 avaliações.   
+
+2. Quantas avaliações foram classificadas como negativas pela métrica de Jaccard?
+Resposta: 71 avaliações.   
+
+3. Quantas avaliações foram classificadas como positivas pela distância de Levenshtein?
+Resposta: 43 avaliações.   
+
+4. Quantas avaliações foram classificadas como negativas pela distância de Levenshtein?
+Resposta: 57 avaliações.   
+
+5. Em quantas avaliações as duas métricas produziram a mesma classificação?
+Resposta: 66 avaliações.  
+
+6. Em quantas avaliações as métricas produziram classificações diferentes?Resposta: 
+34 avaliações.   
+
+7. Por que Jaccard e Levenshtein podem produzir resultados diferentes para uma mesma avaliação?
+Resposta: Porque avaliam dimensões textuais distintas. A Similaridade de Jaccard trabalha em nível de conjunto de palavras (tokens), desconsiderando a ordem dos termos, repetições exatas e variações estritamente morfológicas de caracteres. Já a Distância de Levenshtein opera em nível sequencial de caracteres (string completa), contando a quantidade mínima de operações de inserção, remoção e substituição necessárias para transformar uma frase em outra. Dessa forma, duas frases podem compartilhar um vocabulário semelhante (boa pontuação em Jaccard), mas possuírem tamanhos e estruturas de caracteres muito distantes da referência (distância de Levenshtein alta), gerando divergências.   
+
+8. Qual das duas métricas apresentou maior sensibilidade às diferenças entre os textos? Justifique sua resposta com base nos resultados obtidos.
+Resposta: A Distância de Levenshtein apresentou maior sensibilidade às variações textuais. Como ela contabiliza cada caractere alterado, inserido ou removido na string inteira, ela é fortemente influenciada por pequenos detalhes de escrita, erros de digitação e pelo comprimento do texto. Isso explica por que Levenshtein tendeu a classificar um volume maior de textos como positivos (43 contra 29 de Jaccard) ao capturar proximidades estruturais de caracteres que o conjunto de palavras de Jaccard acabava por ignorar.  
