@@ -28,5 +28,5 @@ O objetivo do programa é ler uma base de dados com 100 avaliações de clientes
 
   ```bash
     python main.py
-    ```
+  ```
 O arquivo resultado_avaliacoes.xlsx será gerado na pasta com os resultados da classificação.
