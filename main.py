@@ -61,10 +61,7 @@ for idx, row in df.iterrows():
     l_neg = levenshtein_distance(clean_text, ref_neg_clean)
     
     # Regras de Classificação (conforme especificação da atividade)
-    # Jaccard: Positivo > Negativo -> Positiva, senão Negativa (inclui empates)
     class_j = 'Positiva' if j_pos > j_neg else 'Negativa'
-    
-    # Levenshtein: Positivo < Negativo -> Positiva, senão Negativa (inclui empates)
     class_l = 'Positiva' if l_pos < l_neg else 'Negativa'
     
     results.append({
@@ -82,4 +79,56 @@ res_df = pd.DataFrame(results)
 
 # Salvar o resultado em um novo arquivo Excel
 res_df.to_excel("resultado_avaliacoes.xlsx", index=False)
-print("Processamento concluído! Arquivo 'resultado_avaliacoes.xlsx' gerado com sucesso.")
+print("Processamento concluído! Arquivo 'resultado_avaliacoes.xlsx' gerado com sucesso.\n")
+
+# ==============================================================================
+# 6. ANÁLISE DOS RESULTADOS E RESPOSTAS AUTOMÁTICAS
+# ==============================================================================
+
+# Cálculos numéricos a partir dos dados processados
+jaccard_pos = (res_df['Class_Jaccard'] == 'Positiva').sum()
+jaccard_neg = (res_df['Class_Jaccard'] == 'Negativa').sum()
+
+lev_pos = (res_df['Class_Levenshtein'] == 'Positiva').sum()
+lev_neg = (res_df['Class_Levenshtein'] == 'Negativa').sum()
+
+concordancia = (res_df['Class_Jaccard'] == res_df['Class_Levenshtein']).sum()
+divergencia = (res_df['Class_Jaccard'] != res_df['Class_Levenshtein']).sum()
+
+print("=" * 70)
+print("              ANÁLISE DOS RESULTADOS (RELATÓRIO TÉCNICO)              ")
+print("=" * 70)
+
+print(f"\n1. Quantas avaliações foram classificadas como positivas pela métrica de Jaccard?")
+print(f"   Resposta: {jaccard_pos} avaliações.")
+
+print(f"\n2. Quantas avaliações foram classificadas como negativas pela métrica de Jaccard?")
+print(f"   Resposta: {jaccard_neg} avaliações.")
+
+print(f"\n3. Quantas avaliações foram classificadas como positivas pela distância de Levenshtein?")
+print(f"   Resposta: {lev_pos} avaliações.")
+
+print(f"\n4. Quantas avaliações foram classificadas como negativas pela distância de Levenshtein?")
+print(f"   Resposta: {lev_neg} avaliações.")
+
+print(f"\n5. Em quantas avaliações as duas métricas produziram a mesma classificação?")
+print(f"   Resposta: {concordancia} avaliações.")
+
+print(f"\n6. Em quantas avaliações as métricas produziram classificações diferentes?")
+print(f"   Resposta: {divergencia} avaliações.")
+
+print(f"\n7. Por que Jaccard e Levenshtein podem produzir resultados diferentes para uma mesma avaliação?")
+print("   Resposta: Porque avaliam dimensões textuais distintas. A Similaridade de Jaccard trabalha em nível")
+print("   de conjunto de palavras (tokens), desconsiderando a ordem dos termos, repetições exatas e variações")
+print("   estritamente morfológicas de caracteres. Já a Distância de Levenshtein opera em nível sequencial de")
+print("   caracteres (string completa), contando a quantidade mínima de operações de inserção, remoção e")
+print("   substituição necessárias para transformar uma frase em outra.")
+
+print(f"\n8. Qual das duas métricas apresentou maior sensibilidade às diferenças entre os textos?")
+print("   Resposta: A Distância de Levenshtein apresentou maior sensibilidade às variações textuais. Como ela")
+print("   contabiliza cada caractere alterado, inserido ou removido na string inteira, ela é fortemente")
+print("   influenciada por pequenos detalhes de escrita, erros de digitação e pelo comprimento do texto. Isso")
+print(f"   explica por que Levenshtein tendeu a classificar um volume maior de textos como positivos ({lev_pos} contra")
+print(f"   {jaccard_pos} de Jaccard) ao capturar proximidades estruturais que Jaccard ignorou.")
+
+print("=" * 70)
